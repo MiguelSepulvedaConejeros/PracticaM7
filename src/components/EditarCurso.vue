@@ -1,15 +1,15 @@
 <template>
     <v-sheet class="mt-15" >
         <v-form @submit.prevent>
-            <v-text-field v-model="curso.nombre" :rules="rules" label="Nombre"></v-text-field>
-            <v-text-field v-model="curso.img" :rules="rules" label="URL de la imagen"></v-text-field>
-            <v-text-field v-model="curso.cupos" :rules="rules" label="Cupos del curso"></v-text-field>
-            <v-text-field v-model="curso.inscritos" :rules="rules" label="Inscritos en el curso"></v-text-field>
-            <v-text-field v-model="curso.duracion" :rules="rules" label="Duración del curso"></v-text-field>
+            <v-text-field type="text" v-model="curso.nombre" :rules="rules" label="Nombre"></v-text-field>
+            <v-text-field type="url" v-model="curso.img" :rules="rules" label="URL de la imagen"></v-text-field>
+            <v-text-field type="number" v-model="curso.cupos" :rules="rules" label="Cupos del curso"></v-text-field>
+            <v-text-field type="number" v-model="curso.inscritos" :rules="rules" label="Inscritos en el curso"></v-text-field>
+            <v-text-field type="text" v-model="curso.duracion" :rules="rules" label="Duración del curso"></v-text-field>
             <v-text-field v-model="curso.fecha_registro" :rules="rules" label="Fecha de registro"></v-text-field>
-            <v-text-field v-model="curso.editCompletado" :rules="[valCompletado]" label="Terminado"></v-text-field>
-            <v-text-field v-model="curso.costo" :rules="rules" label="Costo del curso"></v-text-field>
-            <v-textarea v-model="curso.descripcion" :rules="rules" label="Descripción del curso"></v-textarea>
+            <v-text-field placeholder="Ingrese sí o no" type="" v-model="curso.editCompletado" :rules="[valCompletado]" label="Terminado"></v-text-field>
+            <v-text-field type="number" v-model="curso.costo" :rules="rules" label="Costo del curso"></v-text-field>
+            <v-textarea type="text" v-model="curso.descripcion" :rules="rules" label="Descripción del curso"></v-textarea>
             <v-btn class="btn-form" color="green" @click="editCurso">EDITAR</v-btn>
             <v-btn class="btn-form" color="red" @click="closeEdit">CANCELAR</v-btn>
         </v-form>
@@ -35,13 +35,13 @@ export default {
                 id:0,
                 nombre: '',
                 img: '',
-                cupos: 0,
-                inscritos: 0,
+                cupos: '',
+                inscritos: '',
                 duracion: '',
                 fecha_registro: '',
                 editCompletado: '',
                 completado: '',
-                costo: 0,
+                costo: '',
                 descripcion: '',
             }
         }
@@ -62,6 +62,12 @@ export default {
         }
         },
         editCurso() {
+            if(parseInt(this.curso.inscritos) > parseInt(this.curso.cupos)) {
+                alert('No se puede editar el curso. La cantidad de inscritos en mayor que los cupos disponibles')
+            }
+            if(this.curso.completado === true){
+                this.curso.inscritos = 0;
+            }
             this.curso.editCompletado = this.curso.completado
 
             const updatedData = {
