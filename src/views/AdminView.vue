@@ -23,7 +23,7 @@
                         <td>{{ curso.inscritos }}</td>
                         <td>{{ curso.duracion }}</td>
                         <td><span class="cost-css">$ {{ curso.costo }}</span></td>
-                        <td><span :class="curso.completado ? 'Si' : 'No'">{{ curso.completado ? 'Sí' : 'No' }}</span></td>
+                        <td><span class="curcomplete" :class="curso.completado ? 'Si' : 'No'">{{ curso.completado ? 'Sí' : 'No' }}</span></td>
                         <td><span class="date-css">{{ curso.fecha_registro }}</span></td>
                         <td>
                             <v-icon @click="openEdit(curso)" color="yellow-darken-3" class="cursor-pointer mr-7">mdi-pencil</v-icon>
@@ -136,6 +136,9 @@ export default{
     background-color: rgb(20, 160, 20);
     border-radius: 15px;
     padding: 5px;
+}
+.curcomplete{
+    padding: 10px !important;
 }
 .Si {
     color: white;

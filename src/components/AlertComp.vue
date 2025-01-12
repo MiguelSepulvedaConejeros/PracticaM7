@@ -3,8 +3,8 @@
         <v-row class="container">
             <div>
                 <p class="mb-3 ml-5">Seguro de eliminar el curso</p>
-                <v-btn class="mr-5" @click="elimCurso">ELIMINAR</v-btn>
-                <v-btn @click="closeAlert">CANCELAR</v-btn>
+                <v-btn class="mr-5" @click="elimCurso" color="green">ACEPTAR</v-btn>
+                <v-btn @click="closeAlert" color="red">CANCELAR</v-btn>
             </div>
         </v-row>
     </v-container>
@@ -36,8 +36,8 @@ export default{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #cac3c3;
-    width: 350px;
+    background-color: #e0e8ec;
+    width: 330px;
     height: 100px;
     border-radius: 5px;
 }

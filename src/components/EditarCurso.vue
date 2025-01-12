@@ -7,7 +7,7 @@
             <v-text-field v-model="curso.inscritos" :rules="rules" label="Inscritos en el curso"></v-text-field>
             <v-text-field v-model="curso.duracion" :rules="rules" label="Duración del curso"></v-text-field>
             <v-text-field v-model="curso.fecha_registro" :rules="rules" label="Fecha de registro"></v-text-field>
-            <v-text-field v-model="curso.completado" :rules="rules" label="Terminado"></v-text-field>
+            <v-text-field v-model="curso.editCompletado" :rules="[valCompletado]" label="Terminado"></v-text-field>
             <v-text-field v-model="curso.costo" :rules="rules" label="Costo del curso"></v-text-field>
             <v-textarea v-model="curso.descripcion" :rules="rules" label="Descripción del curso"></v-textarea>
             <v-btn class="btn-form" color="green" @click="editCurso">EDITAR</v-btn>
@@ -39,7 +39,8 @@ export default {
                 inscritos: 0,
                 duracion: '',
                 fecha_registro: '',
-                completado: false,
+                editCompletado: '',
+                completado: '',
                 costo: 0,
                 descripcion: '',
             }
@@ -52,7 +53,17 @@ export default {
         }
     },
     methods: {
+        valCompletado(value) {
+        if (value === 'sí' || value === 'si') {
+            this.curso.completado = true;
+            return true;
+        } else if (value === 'no') {
+            this.curso.completado = false;
+        }
+        },
         editCurso() {
+            this.curso.editCompletado = this.curso.completado
+
             const updatedData = {
                 nombre: this.curso.nombre,
                 img: this.curso.img,

@@ -7,11 +7,11 @@
             <v-text-field :rules="rules" label="Nombre" v-model="curso.nombre"></v-text-field>
             <v-text-field :rules="rules" label="URL de la imagen" v-model="curso.img" ></v-text-field>
             <v-text-field :rules="rules" label="Cupos del curso" v-model="curso.cupos"></v-text-field>
-            <v-text-field :rules="rulesIns" label="Inscritos en el curso" v-model="curso.inscritos"></v-text-field>
+            <v-text-field :rules="rules" label="Inscritos en el curso" v-model="curso.inscritos"></v-text-field>
             <v-text-field :rules="rules" label="Duración del curso" v-model="curso.duracion"></v-text-field>
-            <v-text-field :rules="rules" type="date" label="Fecha de registro" v-model="curso.fecha_registro"></v-text-field>
+            <v-text-field :rules="rules" label="Fecha de registro" v-model="curso.fecha_registro"></v-text-field>
             <v-text-field :rules="rules" label="Costo del curso" v-model="curso.costo"></v-text-field>
-            <v-textarea :rules="rules" label="Descripción del curso" v-model="curso.descripcion"></v-textarea>
+            <v-textarea  :rules="rules" label="Descripción del curso" v-model="curso.descripcion"></v-textarea>
             <v-btn class="btn-form" color="green" @click="addCurso()">AGREGAR</v-btn>
             <v-btn class="btn-form" color="orange">LIMPIAR FORMULARIO</v-btn>
             <v-btn class="btn-form" color="red" @click="closeForm">CANCELAR</v-btn>
@@ -26,6 +26,11 @@ import store from '../store/index.js';
 export default {
     data: () => {
         store;
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const year = today.getFullYear();
+        const formattedDate = `${day}-${month}-${year}`;
         return {
             rules: [
                 value => !!value || 'Required',
@@ -34,35 +39,27 @@ export default {
                 id:0,
                 nombre: '',
                 img: '',
-                cupos: 0,
-                inscritos: 0,
+                cupos: '',
+                inscritos: '',
                 duracion: '',
-                fecha_registro: '',
+                fecha_registro: formattedDate,
                 completado: false,
-                costo: 0,
+                costo: '',
                 descripcion: '',
             }
         }
     },
    
     methods: {
-        valInscritos(value){
-            if(!value) return 'Este campo es requerido';
-            if(value > this.curso.cupos) return 'La cantidad de inscritos no puede ser mayor que los cupos disponibles.';
-            return true;
-        },
         closeForm() {
             this.$emit('close'); 
         },
         addCurso() {
-            if(this.curso.inscritos > this.curso.cupos) {
+            if(parseInt(this.curso.inscritos) > parseInt(this.curso.cupos)) {
                 alert('No se puede agregar el curso. La cantidad de inscritos en mayor que los cupos disponibles')
             } else {
-                this.$store.dispatch('addCurso', newCurso);
-                this.closeForm();
-            }
-            const cursos = this.$store.state.cursos;
-            const newCurso = {
+                const cursos = this.$store.state.cursos;
+                const newCurso = {
                 id: cursos.length + 1,
                 nombre: this.curso.nombre,
                 img: this.curso.img,
@@ -74,16 +71,12 @@ export default {
                 costo: this.curso.costo,
                 descripcion: this.curso.descripcion,
             };
+                this.$store.dispatch('addCurso', newCurso);
+                this.closeForm();
+            }
         },
     },
-    computed: {
-        rulesIns() {
-            return [
-                value => this.valInscritos(value)
-            ]
-        }
-    }
-    }
+}
 
 </script>
 
